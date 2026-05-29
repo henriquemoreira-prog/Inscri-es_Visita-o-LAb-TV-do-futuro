@@ -10,7 +10,7 @@
 <style>
 :root{--blue:#1d9bf0;--purple:#6d28d9;--pink:#e11d48;--orange:#f59e0b;--bg:#f4f7fb;--text:#111827;--muted:#6b7280;--card:#ffffff;--line:#e5e7eb}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,#fff,var(--bg));color:var(--text)}
-.wrap{max-width:1120px;margin:0 auto;padding:20px 18px 28px}.headerbar{height:70px;border-radius:999px;background:linear-gradient(90deg,#1d4ed8 0%,#6d28d9 42%,#e11d48 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;letter-spacing:.02em;text-transform:uppercase;font-size:clamp(14px,2.1vw,28px);text-align:center;padding:0 18px;box-shadow:0 10px 30px rgba(17,24,39,.12)}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 18px 28px}
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch;margin-top:18px}.left{padding:8px 6px 0}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#1777d0;margin:0 0 18px}.brand img{width:44px;height:44px;border-radius:12px;object-fit:cover}
 h1{font-size:clamp(42px,6vw,78px);line-height:.93;margin:0 0 16px;letter-spacing:-.04em}.grad{background:linear-gradient(90deg,#1d4ed8 0%,#7c3aed 25%,#ec4899 50%,#f59e0b 75%,#10b981 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -21,12 +21,11 @@ h1{font-size:clamp(42px,6vw,78px);line-height:.93;margin:0 0 16px;letter-spacing
 .guest{border:1px dashed #cbd5e1;border-radius:18px;background:#fafafa;padding:16px}.guest-title{font-weight:800;margin-bottom:12px}.guest-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.btn{appearance:none;border:none;border-radius:16px;padding:14px 18px;font-weight:900;font-size:16px;color:#fff;background:linear-gradient(90deg,#1d9bf0,#7c3aed,#f59e0b);cursor:pointer;box-shadow:0 12px 24px rgba(29,155,240,.22)}.btn:disabled{opacity:.55;cursor:not-allowed}.small{font-size:13px;color:var(--muted);margin-top:8px}
 .footer{margin-top:18px;padding-top:16px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.footer .sig{font-weight:700;color:#374151}
 .badge{margin-top:16px;display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.badge img{width:34px;height:34px;border-radius:10px;object-fit:cover}
-@media (max-width:900px){.hero{grid-template-columns:1fr}.row,.guest-row,.footer{grid-template-columns:1fr}.headerbar{height:auto;min-height:70px;padding:14px 18px}}
+@media (max-width:900px){.hero{grid-template-columns:1fr}.row,.guest-row,.footer{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="headerbar">OPEC & AUTOMAÇÃO DE NEGÓCIOS - DISTRIBUIÇÃO DE PUBLICIDADE - ADSOLUTIONS E QUALIDADE DA DISTRIBUIÇÃO</div>
   <div class="hero">
     <div class="left">
       <div class="brand"><img src="data:image/jpeg;base64,LOGO_AQUI" alt="logo"></div>
