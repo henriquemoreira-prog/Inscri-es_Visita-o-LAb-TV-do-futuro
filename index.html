@@ -76,16 +76,17 @@ h.addEventListener('change',()=>{if(h.value && (h.value<'10:00' || h.value>'12:0
 form.addEventListener('submit',async e=>{e.preventDefault(); const count=parseInt(q.value||'0',10); if(!count||count<1||count>5){normMsg('Selecione entre 1 e 5 visitantes.','error'); return;} if(!d.value || !h.value){normMsg('Preencha data e horário.','error'); return;} const wd=new Date(d.value+'T00:00:00').getDay(); if(!allowed.includes(wd)){normMsg('Data inválida. Use terça a quinta.','error'); return;} if(h.value<'10:00' || h.value>'12:00'){normMsg('Horário inválido. Use 10h às 12h.','error'); return;} const fd=new FormData(form); const data=Object.fromEntries(fd.entries()); const payload={...data,total_people:count,timestamp:new Date().toISOString()}; btn.disabled=true; btn.textContent='Enviando...'; try { await sendToPowerAutomate(payload); normMsg('Inscrição enviada com sucesso.','success'); } catch (err) { normMsg('Não foi possível enviar para a automação.','error'); } finally { btn.disabled=false; btn.textContent='Enviar inscrição'; form.reset(); box.classList.add('hidden'); list.innerHTML=''; }});
 </script>
 <script>
-const PA_ENDPOINT = '';
+const PA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw4w1yr44v6ZwjfLaFU-PEYoVNyju4JtnDggdyevxNsDHnsAl8Mi0geATjvmakdN5oD/exec';
 async function sendToPowerAutomate(payload) {
-  if (!PA_ENDPOINT) return { skipped: true };
+  // Google Apps Script não aceita Content-Type: application/json direto
+  // Use no-cors + URLSearchParams OU uma pequena adaptação:
   const res = await fetch(PA_ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain' }, // <-- importante!
     body: JSON.stringify(payload)
   });
   if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res;
+  return res.json();
 }
 </script>
 </body>
