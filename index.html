@@ -51,72 +51,6 @@ h1{font-size:clamp(42px,6vw,78px);line-height:.93;margin:0 0 16px;letter-spacing
 .badge{margin-top:16px;display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.badge img{width:34px;height:34px;border-radius:10px;object-fit:cover}
 .hidden{display:none!important}
 @media (max-width:900px){.hero{grid-template-columns:1fr}.row,.guest-row,.footer{grid-template-columns:1fr}}
-
-
-.calendar {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 10px;
-  width: auto;
-  position: absolute;
-}
-
-.day {
-  display: inline-block;
-  width: 40px;
-  padding: 8px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.day.disabled {
-  color: #ccc;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.day:hover:not(.disabled) {
-  background: #e0f2fe;
-}
-
-
-.week-header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 5px;
-  font-weight: bold;
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.day {
-  padding: 8px;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.day.disabled {
-  color: #ccc;
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-.day:hover:not(.disabled) {
-  background: #e0f2fe;
-}
-
-
 </style>
 </head>
 <body>
@@ -155,12 +89,7 @@ h1{font-size:clamp(42px,6vw,78px);line-height:.93;margin:0 0 16px;letter-spacing
           <div><label>Seu e-mail</label><input required type="email" name="email" placeholder="nome@empresa.com"></div>
         </div>
         <div class="row">
-          <div><label>Data da visita</label>
-          <div class="date-wrapper">
-            <input type="text" name="data" id="data" placeholder="Selecione a data" readonly>
-            <div id="calendar" class="calendar hidden"></div>
-          </div>    
-          </div>  
+          <div><label>Data da visita</label><input required type="date" name="data" id="data"></div>
           <div><label>Horário</label>
             <select required name="hora" id="hora">
               <option value="">Selecione</option>
@@ -188,222 +117,63 @@ h1{font-size:clamp(42px,6vw,78px);line-height:.93;margin:0 0 16px;letter-spacing
     </div>
   </div>
 </div>
-<script src="https://tvglobocorp.sharepoint.com/sites/GECGestodaExibioComercial/Documentos%20Compartilhados/GEC%20-%20Adsolutions%20e%20Qualidade/Bases/visitas.js"></script>
+
 <script>
+const d=document.getElementById('data'), h=document.getElementById('hora'), q=document.getElementById('qtd');
+const box=document.getElementById('guestBox'), list=document.getElementById('guestList'), msg=document.getElementById('msg');
+const form=document.getElementById('form'), btn=document.getElementById('submitBtn');
+const successBlock=document.getElementById('successBlock');
+const allowed=[2,3,4];
 
-// mapa de ocupação
-const ocupacao = {};
-visitas.forEach(v => {
-  if (!v.data_visita) return;
+const minDate=new Date(); minDate.setDate(minDate.getDate()+1); d.min=minDate.toISOString().split('T')[0];
 
-  if (!ocupacao[v.data_visita]) {
-    ocupacao[v.data_visita] = [];
-  }
-
-  ocupacao[v.data_visita].push(v.hora_visita);
-});
-
-const d = document.getElementById('data');
-const h = document.getElementById('hora');
-const q = document.getElementById('qtd');
-
-const box = document.getElementById('guestBox');
-const list = document.getElementById('guestList');
-const msg = document.getElementById('msg');
-
-const form = document.getElementById('form');
-const btn = document.getElementById('submitBtn');
-const successBlock = document.getElementById('successBlock');
-
-const allowed = [2, 3, 4];
-
-// calendário
-const fake = document.getElementById('data');
-const calendar = document.getElementById('calendar');
-
-// ✅ abrir calendário
-fake.addEventListener('click', (e) => {
-  e.stopPropagation();
-  calendar.classList.toggle('hidden');
-});
-
-// ✅ não fechar clicando dentro
-calendar.addEventListener('click', (e) => {
-  e.stopPropagation();
-});
-
-// ✅ fechar ao clicar fora
-document.addEventListener('click', (e) => {
-  const wrapper = document.querySelector('.date-wrapper');
-
-  if (!wrapper.contains(e.target)) {
-    calendar.classList.add('hidden');
-  }
-});
-
-// ✅ gerar calendário
-function generateCalendar() {
-  calendar.innerHTML = '';
-
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-
-  const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
-  const header = document.createElement('div');
-  header.className = 'week-header';
-
-  weekDays.forEach(d => {
-    const el = document.createElement('div');
-    el.textContent = d;
-    header.appendChild(el);
-  });
-
-  calendar.appendChild(header);
-
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const firstDay = new Date(year, month, 1).getDay();
-
-  const grid = document.createElement('div');
-  grid.className = 'grid';
-
-  for (let i = 0; i < firstDay; i++) {
-    grid.appendChild(document.createElement('div'));
-  }
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    const date = new Date(year, month, i);
-    const dayWeek = date.getDay();
-    const formatted = date.toISOString().split('T')[0];
-
-    const el = document.createElement('div');
-    el.className = 'day';
-    el.textContent = i;
-
-    const horariosOcupados = ocupacao[formatted] || [];
-    const diaLotado = horariosOcupados.length >= 3;
-
-    if (
-      !allowed.includes(dayWeek) || // dia inválido
-      diaLotado // todos horários ocupados
-    ) {
-      el.classList.add('disabled');
-    } else {
-      el.addEventListener('click', () => {
-        d.value = formatted;
-
-        // ✅ filtrar horários disponíveis
-        Array.from(h.options).forEach(opt => {
-          if (!opt.value) return;
-          opt.disabled = horariosOcupados.includes(opt.value);
-        });
-
-        calendar.classList.add('hidden');
-      });
-    }
-
-    grid.appendChild(el);
-  }
-
-  calendar.appendChild(grid);
-}
-
-generateCalendar();
-
-// ✅ mensagens
-function normMsg(t, cls = 'notice') {
-  msg.className = cls;
-  msg.innerHTML = t;
+function normMsg(t,cls='notice'){
+  msg.className=cls;
+  msg.innerHTML=t;
   msg.classList.remove('hidden');
 }
 
-// ✅ sucesso
-function showSuccess() {
+function showSuccess(){
+  // Esconde o formulário inteiro e a mensagem de instrução
   form.classList.add('hidden');
   msg.classList.add('hidden');
+  // Exibe o bloco de sucesso estilizado
   successBlock.classList.add('visible');
 }
 
-// ✅ convidados
-function buildGuests(n) {
-  list.innerHTML = '';
+function buildGuests(n){list.innerHTML=''; if(n<=1){box.classList.add('hidden'); return;} box.classList.remove('hidden'); for(let i=1;i<n;i++){const el=document.createElement('div'); el.className='guest-row'; el.innerHTML=`<div><label>Nome do visitante ${i}</label><input required name="guest_name_${i}" placeholder="Nome completo"></div><div><label>E-mail do visitante ${i}</label><input required type="email" name="guest_email_${i}" placeholder="email@dominio.com"></div>`; list.appendChild(el);}}
 
-  if (n <= 1) {
-    box.classList.add('hidden');
-    return;
+q.addEventListener('change',()=>buildGuests(parseInt(q.value||'1',10)));
+
+d.addEventListener('change',()=>{
+  if(d.value){
+    const wd=new Date(d.value+'T00:00:00').getDay();
+    if(!allowed.includes(wd)){normMsg('A visita pode ser agendada apenas de terça a quinta.','error'); d.value=''; return;}
+    normMsg('Preencha seus dados e selecione a quantidade de visitantes.','notice');
   }
-
-  box.classList.remove('hidden');
-
-  for (let i = 1; i < n; i++) {
-    const el = document.createElement('div');
-    el.className = 'guest-row';
-
-    el.innerHTML = `
-      <div>
-        <label>Nome do visitante ${i}</label>
-        <input required name="guest_name_${i}">
-      </div>
-      <div>
-        <label>E-mail do visitante ${i}</label>
-        <input required type="email" name="guest_email_${i}">
-      </div>
-    `;
-
-    list.appendChild(el);
-  }
-}
-
-q.addEventListener('change', () => {
-  buildGuests(parseInt(q.value || '1', 10));
 });
 
-// ✅ submit
-form.addEventListener('submit', async e => {
+form.addEventListener('submit',async e=>{
   e.preventDefault();
-
-  const count = parseInt(q.value || '0', 10);
-
-  if (!count || count < 1 || count > 5) {
-    normMsg('Selecione entre 1 e 5 visitantes.', 'error');
-    return;
-  }
-
-  if (!d.value || !h.value) {
-    normMsg('Preencha data e horário.', 'error');
-    return;
-  }
-
-  const wd = new Date(d.value + 'T00:00:00').getDay();
-
-  if (!allowed.includes(wd)) {
-    normMsg('Data inválida. Use terça a quinta.', 'error');
-    return;
-  }
-
-  const fd = new FormData(form);
-  const data = Object.fromEntries(fd.entries());
-
-  const payload = {
-    ...data,
-    total_people: count,
-    timestamp: new Date().toISOString()
-  };
-
-  btn.disabled = true;
-  btn.textContent = 'Enviando...';
-
+  const count=parseInt(q.value||'0',10);
+  if(!count||count<1||count>5){normMsg('Selecione entre 1 e 5 visitantes.','error'); return;}
+  if(!d.value || !h.value){normMsg('Preencha data e horário.','error'); return;}
+  const wd=new Date(d.value+'T00:00:00').getDay();
+  if(!allowed.includes(wd)){normMsg('Data inválida. Use terça a quinta.','error'); return;}
+  if(h.value<'10:00' || h.value>'12:00'){normMsg('Horário inválido. Use 10h às 12h.','error'); return;}
+  const fd=new FormData(form);
+  const data=Object.fromEntries(fd.entries());
+  const payload={...data,total_people:count,timestamp:new Date().toISOString()};
+  btn.disabled=true; btn.textContent='Enviando...';
   try {
     await sendToPowerAutomate(payload);
     showSuccess();
-  } catch {
-    normMsg('Erro ao enviar.', 'error');
+  } catch (err) {
+    normMsg('Não foi possível enviar para a automação.','error');
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Enviar inscrição';
+    btn.disabled=false; btn.textContent='Enviar inscrição';
   }
 });
-
 </script>
 
 <script>
