@@ -48,9 +48,41 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
 .calendar{
   background:#fff;border:1px solid #ddd;padding:10px;border-radius:10px;
   position:absolute;top:calc(100% + 6px);left:0;
-  width:280px;max-width:calc(100vw - 36px);
+  width:300px;max-width:calc(100vw - 36px);
   z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.15);
+  overflow-y:auto;max-height:600px;
 }
+
+.calendar-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:15px;padding:0 10px;
+}
+
+.calendar-header button{
+  background:none;border:none;color:#1d9bf0;cursor:pointer;font-weight:bold;
+  font-size:18px;padding:5px 10px;border-radius:6px;
+}
+
+.calendar-header button:hover{
+  background:#f0f0f0;
+}
+
+.calendar-header .month-title{
+  font-weight:bold;font-size:16px;color:var(--text);
+}
+
+.months-container{
+  display:grid;grid-template-columns:1fr;gap:15px;
+}
+
+.month-block{
+  border:1px solid #eee;border-radius:8px;padding:10px;background:#fafafa;
+}
+
+.month-block .month-title{
+  font-weight:bold;font-size:14px;color:var(--text);margin-bottom:8px;text-align:center;
+}
+
 .week-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:5px;font-weight:bold;text-align:center;font-size:11px;color:#6b7280}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .day{padding:7px 4px;text-align:center;border-radius:8px;cursor:pointer;font-size:13px;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -60,7 +92,8 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}
   .row,.guest-row,.footer{grid-template-columns:1fr}
-  .calendar{width:100%;max-width:100%}
+  .calendar{width:100%;max-width:100%;left:auto;right:auto}
+  .months-container{grid-template-columns:1fr}
   .wrap{padding:14px 14px 24px}
   .card{padding:18px 14px}
 }
@@ -137,7 +170,7 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
 </div>
 
 <script>
-// ─── Estado global de ocupação (preenchido pelo visitas.js quando carregar) ───
+// ─── Estado global de ocupação ───
 var ocupacao = {};
 
 // ─── Elementos ───
@@ -155,14 +188,23 @@ var successBlock= document.getElementById('successBlock');
 
 var allowed = [2, 3, 4]; // ter, qua, qui
 
-// ─── Calendário ───────────────────────────────────────────────────────────────
-function generateCalendar() {
-  calendar.innerHTML = '';
-  var today = new Date();
-  var year  = today.getFullYear();
-  var month = today.getMonth();
+// ─── Controle de navegação de meses ───
+var currentCalendarMonth = new Date().getMonth();
+var currentCalendarYear = new Date().getFullYear();
 
-  // cabeçalho dias da semana
+// ─── Função para gerar um mês específico ───
+function generateMonthBlock(year, month) {
+  var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  
+  var monthBlock = document.createElement('div');
+  monthBlock.className = 'month-block';
+  
+  var monthTitle = document.createElement('div');
+  monthTitle.className = 'month-title';
+  monthTitle.textContent = monthNames[month] + ' ' + year;
+  monthBlock.appendChild(monthTitle);
+  
   var header = document.createElement('div');
   header.className = 'week-header';
   ['DOM','SEG','TER','QUA','QUI','SEX','SAB'].forEach(function(d) {
@@ -170,32 +212,31 @@ function generateCalendar() {
     el.textContent = d;
     header.appendChild(el);
   });
-  calendar.appendChild(header);
-
+  monthBlock.appendChild(header);
+  
   var daysInMonth = new Date(year, month + 1, 0).getDate();
   var firstDay    = new Date(year, month, 1).getDay();
-
+  
   var grid = document.createElement('div');
   grid.className = 'cal-grid';
-
-  // células vazias antes do dia 1
+  
   for (var i = 0; i < firstDay; i++) {
     grid.appendChild(document.createElement('div'));
   }
-
+  
   for (var i = 1; i <= daysInMonth; i++) {
     (function(day) {
       var date      = new Date(year, month, day);
       var dayWeek   = date.getDay();
-      var formatted = date.toISOString().split('T')[0];
-
+      var formatted = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+      
       var el = document.createElement('div');
       el.className = 'day';
       el.textContent = day;
-
+      
       var horariosOcupados = ocupacao[formatted] || [];
       var diaLotado = horariosOcupados.length >= 3;
-
+      
       if (!allowed.includes(dayWeek) || diaLotado) {
         el.classList.add('disabled');
       } else {
@@ -204,19 +245,70 @@ function generateCalendar() {
           selecionarData(formatted, horariosOcupados);
         });
       }
-
+      
       grid.appendChild(el);
     })(i);
   }
+  
+  monthBlock.appendChild(grid);
+  return monthBlock;
+}
 
-  calendar.appendChild(grid);
+// ─── Calendário com 1 mês ───
+function generateCalendar() {
+  calendar.innerHTML = '';
+  
+  var calendarHeader = document.createElement('div');
+  calendarHeader.className = 'calendar-header';
+  
+  var prevBtn = document.createElement('button');
+  prevBtn.textContent = '←';
+  prevBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // Impede o fechamento
+    currentCalendarMonth--;
+    if (currentCalendarMonth < 0) {
+      currentCalendarMonth = 11;
+      currentCalendarYear--;
+    }
+    generateCalendar();
+  });
+  
+  var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  var monthTitle = document.createElement('div');
+  monthTitle.className = 'month-title';
+  monthTitle.textContent = monthNames[currentCalendarMonth] + ' ' + currentCalendarYear;
+  
+  var nextBtn = document.createElement('button');
+  nextBtn.textContent = '→';
+  nextBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // Impede o fechamento
+    currentCalendarMonth++;
+    if (currentCalendarMonth > 11) {
+      currentCalendarMonth = 0;
+      currentCalendarYear++;
+    }
+    generateCalendar();
+  });
+  
+  calendarHeader.appendChild(prevBtn);
+  calendarHeader.appendChild(monthTitle);
+  calendarHeader.appendChild(nextBtn);
+  calendar.appendChild(calendarHeader);
+  
+  var monthsContainer = document.createElement('div');
+  monthsContainer.className = 'months-container';
+  monthsContainer.appendChild(generateMonthBlock(currentCalendarYear, currentCalendarMonth));
+  
+  calendar.appendChild(monthsContainer);
 }
 
 function selecionarData(formatted, horariosOcupados) {
   dataHidden.value = formatted;
   trigger.textContent = formatted;
   trigger.classList.add('filled');
-  // filtrar horários disponíveis
   Array.from(horaSelect.options).forEach(function(opt) {
     if (!opt.value) return;
     opt.disabled = (horariosOcupados || []).includes(opt.value);
@@ -225,7 +317,7 @@ function selecionarData(formatted, horariosOcupados) {
 }
 
 function abrirCalendario() {
-  generateCalendar(); // regera sempre para pegar ocupação atualizada
+  generateCalendar();
   calendar.classList.remove('hidden');
 }
 
@@ -233,7 +325,7 @@ function fecharCalendario() {
   calendar.classList.add('hidden');
 }
 
-// ─── Fechar ao clicar/tocar fora ─────────────────────────────────────────────
+// Fechar ao clicar fora
 document.addEventListener('click', function(e) {
   if (!calendar.classList.contains('hidden') &&
       !document.querySelector('.date-wrapper').contains(e.target)) {
@@ -243,7 +335,7 @@ document.addEventListener('click', function(e) {
 
 window.addEventListener('scroll', fecharCalendario, { passive: true });
 
-// ─── Convidados ───────────────────────────────────────────────────────────────
+// Convidados
 qtdSelect.addEventListener('change', function() {
   var n = parseInt(qtdSelect.value || '1', 10);
   guestList.innerHTML = '';
@@ -259,7 +351,6 @@ qtdSelect.addEventListener('change', function() {
   }
 });
 
-// ─── Mensagens ────────────────────────────────────────────────────────────────
 function normMsg(t, cls) {
   msgEl.className = cls || 'notice';
   msgEl.innerHTML = t;
@@ -272,7 +363,6 @@ function showSuccess() {
   successBlock.classList.add('visible');
 }
 
-// ─── Submit ───────────────────────────────────────────────────────────────────
 formEl.addEventListener('submit', async function(e) {
   e.preventDefault();
   var count = parseInt(qtdSelect.value || '0', 10);
@@ -299,16 +389,12 @@ formEl.addEventListener('submit', async function(e) {
   }
 });
 
-// ─── Carregar visitas.js e aguardar antes de liberar o calendário ────────────
-var scriptLoadingStatus = 'idle'; // idle, loading, success, error
-
+var scriptLoadingStatus = 'idle';
 var visitasCarregadas = new Promise(function(resolve) {
   scriptLoadingStatus = 'loading';
   var s = document.createElement('script');
-  // Usando URL absoluta e garantindo que o append seja feito no head ou body de forma robusta
   s.src = 'https://felipenicoletti.github.io/Iscricoes_Visitacao_LAB-TV-do-futuro/visitas.js?v=' + Date.now();
   s.async = true;
-  
   s.onload = function() {
     scriptLoadingStatus = 'success';
     if (typeof visitas !== 'undefined') {
@@ -320,34 +406,22 @@ var visitasCarregadas = new Promise(function(resolve) {
     }
     resolve();
   };
-  
   s.onerror = function() {
     scriptLoadingStatus = 'error';
-    console.warn('visitas.js não carregou. Verifique permissões do SharePoint ou conexão.');
-    resolve(); // resolve mesmo assim para não travar a UI
+    resolve();
   };
-  
   (document.head || document.body).appendChild(s);
 });
 
-// ─── Só abre o calendário após os dados carregarem ────────────────────────────
 trigger.addEventListener('click', async function(e) {
   e.stopPropagation();
   if (!calendar.classList.contains('hidden')) { fecharCalendario(); return; }
-  
   var originalText = dataHidden.value || 'Selecione a data';
   trigger.textContent = 'Carregando...';
   trigger.style.pointerEvents = 'none';
-  
   await visitasCarregadas;
-  
   trigger.textContent = originalText;
   trigger.style.pointerEvents = '';
-  
-  if (scriptLoadingStatus === 'error') {
-     normMsg('Não foi possível carregar as datas ocupadas. Algumas datas podem estar indisponíveis.', 'error');
-  }
-  
   abrirCalendario();
 });
 </script>
