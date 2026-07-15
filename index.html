@@ -32,7 +32,7 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
 .footer{margin-top:18px;padding-top:16px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.footer .sig{line-height:1.65;color:var(--muted);max-width:640px}
 .badge{margin-top:16px;display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.badge img{width:34px;height:34px;border-radius:10px;object-fit:cover}
 .hidden{display:none!important}
-
+ 
 /* date picker */
 .date-wrapper{position:relative}
 .date-trigger{
@@ -44,7 +44,7 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
   display:block;
 }
 .date-trigger.filled{color:var(--text)}
-
+ 
 .calendar{
   background:#fff;border:1px solid #ddd;padding:10px;border-radius:10px;
   position:absolute;top:calc(100% + 6px);left:0;
@@ -52,43 +52,43 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
   z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.15);
   overflow-y:auto;max-height:600px;
 }
-
+ 
 .calendar-header{
   display:flex;justify-content:space-between;align-items:center;
   margin-bottom:15px;padding:0 10px;
 }
-
+ 
 .calendar-header button{
   background:none;border:none;color:#1d9bf0;cursor:pointer;font-weight:bold;
   font-size:18px;padding:5px 10px;border-radius:6px;
 }
-
+ 
 .calendar-header button:hover{
   background:#f0f0f0;
 }
-
+ 
 .calendar-header .month-title{
   font-weight:bold;font-size:16px;color:var(--text);
 }
-
+ 
 .months-container{
   display:grid;grid-template-columns:1fr;gap:15px;
 }
-
+ 
 .month-block{
   border:1px solid #eee;border-radius:8px;padding:10px;background:#fafafa;
 }
-
+ 
 .month-block .month-title{
   font-weight:bold;font-size:14px;color:var(--text);margin-bottom:8px;text-align:center;
 }
-
+ 
 .week-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:5px;font-weight:bold;text-align:center;font-size:11px;color:#6b7280}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .day{padding:7px 4px;text-align:center;border-radius:8px;cursor:pointer;font-size:13px;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .day.disabled{color:#ccc;cursor:not-allowed;pointer-events:none;opacity:.5}
 .day:not(.disabled):hover,.day:not(.disabled):active{background:#e0f2fe}
-
+ 
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}
   .row,.guest-row,.footer{grid-template-columns:1fr}
@@ -101,78 +101,78 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4p
 </head>
 <body>
 <div class="wrap">
-  <div class="hero">
-    <div class="left">
-      <h1><span class="grad">Conheça a TV<br>do Futuro!</span></h1>
-      <p class="lead">Agora temos uma experiência imersiva para vivenciar a realidade da TV 3.0. Uma iniciativa dos times de OPEC e Tecnologia, a mostra apresenta, na prática, a convergência entre TV linear e digital.</p>
-      <div class="points">
-        <div class="point"><strong>Terça a quinta, entre 10h e 12h</strong><span>Visitas guiadas em grupos de até 5 pessoas</span></div>
-        <div class="point"><span>R. Evandro Carlos de Andrade, 160 - Brooklin Novo São Paulo - SP, 04583-115</span><strong>7º andar, lado esquerdo dos elevadores final do corredor</strong><span>Preencha sua visita e os convidados.</span></div>
-      </div>
-      <div class="badge"><div><div style="font-weight:800">Inscreva-se aqui*</div><div class="small">*As visitas serão realizadas em grupos de cinco pessoas, para uma melhor experiência.</div></div></div>
-    </div>
-
+<div class="hero">
+<div class="left">
+<h1><span class="grad">Conheça a TV<br>do Futuro!</span></h1>
+<p class="lead">Agora temos uma experiência imersiva para vivenciar a realidade da TV 3.0. Uma iniciativa dos times de OPEC e Tecnologia, a mostra apresenta, na prática, a convergência entre TV linear e digital.</p>
+<div class="points">
+<div class="point"><strong>Terça a quinta, entre 10h e 12h</strong><span>Visitas guiadas em grupos de até 5 pessoas</span></div>
+<div class="point"><span>R. Evandro Carlos de Andrade, 160 - Brooklin Novo São Paulo - SP, 04583-115</span><strong>7º andar, lado esquerdo dos elevadores final do corredor</strong><span>Preencha sua visita e os convidados.</span></div>
+</div>
+<div class="badge"><div><div style="font-weight:800">Inscreva-se aqui*</div><div class="small">*As visitas serão realizadas em grupos de cinco pessoas, para uma melhor experiência.</div></div></div>
+</div>
+ 
     <div class="card">
-      <h2>Inscrição para visita</h2>
-
+<h2>Inscrição para visita</h2>
+ 
       <div id="successBlock" class="success-block">
-        <div class="success-title">Sua inscrição foi realizada com sucesso!!!</div>
-        <div class="success-body">
+<div class="success-title">Sua inscrição foi realizada com sucesso!!!</div>
+<div class="success-body">
           Agradecemos o seu interesse em conhecer nosso espaço. Agora, iremos validar a disponibilidade
           da data solicitada e, em seguida, você receberá um convite de confirmação com todos os
           detalhes da sua visita.<br><br>
           Esperamos recebê-lo em breve!
-        </div>
-      </div>
-
-      <div id="msg" class="notice">Preencha seus dados e selecione a quantidade de visitantes.</div>
-
-      <form id="form" class="form">
-        <div class="row">
-          <div><label>Seu nome</label><input required name="nome" placeholder="Nome completo"></div>
-          <div><label>Seu e-mail</label><input required type="email" name="email" placeholder="nome@empresa.com"></div>
-        </div>
-        <div class="row">
-          <div>
-            <label>Data da visita</label>
-            <div class="date-wrapper">
-              <input type="hidden" name="data" id="dataHidden">
-              <div id="dateTrigger" class="date-trigger" role="button" tabindex="0">Selecione a data</div>
-              <div id="calendar" class="calendar hidden"></div>
-            </div>
-          </div>
-          <div><label>Horário</label>
-            <select required name="hora" id="hora">
-              <option value="">Selecione</option>
-              <option value="10:00">10:00</option>
-              <option value="11:00">11:00</option>
-              <option value="12:00">12:00</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div><label>Quantidade de visitantes</label><select id="qtd" name="qtd" required><option value="">Selecione</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-          <div><label>Área / time</label><input name="area" placeholder="Área / time"></div>
-        </div>
-        <div id="guestBox" class="guest hidden"><div class="guest-title">Dados dos visitantes adicionais</div><div id="guestList"></div></div>
-        <div><label>Observações</label><textarea name="obs" rows="3" placeholder="Observações"></textarea></div>
-        <button class="btn" id="submitBtn" type="submit">Enviar inscrição</button>
-      </form>
-
-      <div class="footer">
-        <div class="brand">
-          <img src="logo GloboPBI_Azul.png" alt="logo">
-          <div class="sig">OPEC & Automação de Negócios • Distribuição de Publicidade • AdSolutions e Qualidade da Distribuição</div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
+</div>
+ 
+      <div id="msg" class="notice">Preencha seus dados e selecione a quantidade de visitantes.</div>
+ 
+      <form id="form" class="form">
+<div class="row">
+<div><label>Seu nome</label><input required name="nome" placeholder="Nome completo"></div>
+<div><label>Seu e-mail</label><input required type="email" name="email" placeholder="nome@empresa.com"></div>
+</div>
+<div class="row">
+<div>
+<label>Data da visita</label>
+<div class="date-wrapper">
+<input type="hidden" name="data" id="dataHidden">
+<div id="dateTrigger" class="date-trigger" role="button" tabindex="0">Selecione a data</div>
+<div id="calendar" class="calendar hidden"></div>
+</div>
+</div>
+<div><label>Horário</label>
+<select required name="hora" id="hora">
+<option value="">Selecione</option>
+<option value="10:00">10:00</option>
+<option value="11:00">11:00</option>
+<option value="12:00">12:00</option>
+</select>
+</div>
+</div>
+<div class="row">
+<div><label>Quantidade de visitantes</label><select id="qtd" name="qtd" required><option value="">Selecione</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+<div><label>Área / time</label><input name="area" placeholder="Área / time"></div>
+</div>
+<div id="guestBox" class="guest hidden"><div class="guest-title">Dados dos visitantes adicionais</div><div id="guestList"></div></div>
+<div><label>Observações</label><textarea name="obs" rows="3" placeholder="Observações"></textarea></div>
+<button class="btn" id="submitBtn" type="submit">Enviar inscrição</button>
+</form>
+ 
+      <div class="footer">
+<div class="brand">
+<img src="logo GloboPBI_Azul.png" alt="logo">
+<div class="sig">OPEC & Automação de Negócios • Distribuição de Publicidade • AdSolutions e Qualidade da Distribuição</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
 <script>
 // ─── Estado global de ocupação ───
 var ocupacao = {};
-
+ 
 // ─── Elementos ───
 var dataHidden  = document.getElementById('dataHidden');
 var trigger     = document.getElementById('dateTrigger');
@@ -185,26 +185,23 @@ var msgEl       = document.getElementById('msg');
 var formEl      = document.getElementById('form');
 var submitBtn   = document.getElementById('submitBtn');
 var successBlock= document.getElementById('successBlock');
-
+ 
 var allowed = [2, 3, 4]; // ter, qua, qui
-
+ 
 // ─── Controle de navegação de meses ───
 var currentCalendarMonth = new Date().getMonth();
 var currentCalendarYear = new Date().getFullYear();
-
+ 
 // ─── Função para gerar um mês específico ───
 function generateMonthBlock(year, month) {
   var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-  
   var monthBlock = document.createElement('div');
   monthBlock.className = 'month-block';
-  
   var monthTitle = document.createElement('div');
   monthTitle.className = 'month-title';
   monthTitle.textContent = monthNames[month] + ' ' + year;
   monthBlock.appendChild(monthTitle);
-  
   var header = document.createElement('div');
   header.className = 'week-header';
   ['DOM','SEG','TER','QUA','QUI','SEX','SAB'].forEach(function(d) {
@@ -213,31 +210,28 @@ function generateMonthBlock(year, month) {
     header.appendChild(el);
   });
   monthBlock.appendChild(header);
-  
   var daysInMonth = new Date(year, month + 1, 0).getDate();
   var firstDay    = new Date(year, month, 1).getDay();
-  
   var grid = document.createElement('div');
   grid.className = 'cal-grid';
-  
   for (var i = 0; i < firstDay; i++) {
     grid.appendChild(document.createElement('div'));
   }
-  
+  var hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+ 
   for (var i = 1; i <= daysInMonth; i++) {
     (function(day) {
       var date      = new Date(year, month, day);
       var dayWeek   = date.getDay();
       var formatted = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-      
       var el = document.createElement('div');
       el.className = 'day';
       el.textContent = day;
-      
       var horariosOcupados = ocupacao[formatted] || [];
       var diaLotado = horariosOcupados.length >= 3;
-      
-      if (!allowed.includes(dayWeek) || diaLotado) {
+      var diaPassado = date < hoje;
+      if (!allowed.includes(dayWeek) || diaLotado || diaPassado) {
         el.classList.add('disabled');
       } else {
         el.addEventListener('click', function(e) {
@@ -245,22 +239,18 @@ function generateMonthBlock(year, month) {
           selecionarData(formatted, horariosOcupados);
         });
       }
-      
       grid.appendChild(el);
     })(i);
   }
-  
   monthBlock.appendChild(grid);
   return monthBlock;
 }
-
+ 
 // ─── Calendário com 1 mês ───
 function generateCalendar() {
   calendar.innerHTML = '';
-  
   var calendarHeader = document.createElement('div');
   calendarHeader.className = 'calendar-header';
-  
   var prevBtn = document.createElement('button');
   prevBtn.textContent = '←';
   prevBtn.addEventListener('click', function(e) {
@@ -273,13 +263,11 @@ function generateCalendar() {
     }
     generateCalendar();
   });
-  
   var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   var monthTitle = document.createElement('div');
   monthTitle.className = 'month-title';
   monthTitle.textContent = monthNames[currentCalendarMonth] + ' ' + currentCalendarYear;
-  
   var nextBtn = document.createElement('button');
   nextBtn.textContent = '→';
   nextBtn.addEventListener('click', function(e) {
@@ -292,19 +280,16 @@ function generateCalendar() {
     }
     generateCalendar();
   });
-  
   calendarHeader.appendChild(prevBtn);
   calendarHeader.appendChild(monthTitle);
   calendarHeader.appendChild(nextBtn);
   calendar.appendChild(calendarHeader);
-  
   var monthsContainer = document.createElement('div');
   monthsContainer.className = 'months-container';
   monthsContainer.appendChild(generateMonthBlock(currentCalendarYear, currentCalendarMonth));
-  
   calendar.appendChild(monthsContainer);
 }
-
+ 
 function selecionarData(formatted, horariosOcupados) {
   dataHidden.value = formatted;
   trigger.textContent = formatted;
@@ -315,16 +300,16 @@ function selecionarData(formatted, horariosOcupados) {
   });
   fecharCalendario();
 }
-
+ 
 function abrirCalendario() {
   generateCalendar();
   calendar.classList.remove('hidden');
 }
-
+ 
 function fecharCalendario() {
   calendar.classList.add('hidden');
 }
-
+ 
 // Fechar ao clicar fora
 document.addEventListener('click', function(e) {
   if (!calendar.classList.contains('hidden') &&
@@ -332,9 +317,9 @@ document.addEventListener('click', function(e) {
     fecharCalendario();
   }
 });
-
+ 
 window.addEventListener('scroll', fecharCalendario, { passive: true });
-
+ 
 // Convidados
 qtdSelect.addEventListener('change', function() {
   var n = parseInt(qtdSelect.value || '1', 10);
@@ -350,19 +335,19 @@ qtdSelect.addEventListener('change', function() {
     guestList.appendChild(div);
   }
 });
-
+ 
 function normMsg(t, cls) {
   msgEl.className = cls || 'notice';
   msgEl.innerHTML = t;
   msgEl.classList.remove('hidden');
 }
-
+ 
 function showSuccess() {
   formEl.classList.add('hidden');
   msgEl.classList.add('hidden');
   successBlock.classList.add('visible');
 }
-
+ 
 formEl.addEventListener('submit', async function(e) {
   e.preventDefault();
   var count = parseInt(qtdSelect.value || '0', 10);
@@ -370,12 +355,12 @@ formEl.addEventListener('submit', async function(e) {
   if (!dataHidden.value || !horaSelect.value) { normMsg('Preencha data e horário.', 'error'); return; }
   var wd = new Date(dataHidden.value + 'T00:00:00').getDay();
   if (!allowed.includes(wd)) { normMsg('Data inválida. Use terça a quinta.', 'error'); return; }
-
+ 
   var fd      = new FormData(formEl);
   var payload = Object.fromEntries(fd.entries());
   payload.total_people = count;
   payload.timestamp    = new Date().toISOString();
-
+ 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
   try {
@@ -388,7 +373,7 @@ formEl.addEventListener('submit', async function(e) {
     submitBtn.textContent = 'Enviar inscrição';
   }
 });
-
+ 
 var scriptLoadingStatus = 'idle';
 var visitasCarregadas = new Promise(function(resolve) {
   scriptLoadingStatus = 'loading';
@@ -412,7 +397,7 @@ var visitasCarregadas = new Promise(function(resolve) {
   };
   (document.head || document.body).appendChild(s);
 });
-
+ 
 trigger.addEventListener('click', async function(e) {
   e.stopPropagation();
   if (!calendar.classList.contains('hidden')) { fecharCalendario(); return; }
@@ -425,9 +410,9 @@ trigger.addEventListener('click', async function(e) {
   abrirCalendario();
 });
 </script>
-
+ 
 <script>
-const PA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyAbL6PrNFescOTS6lns2k1rV1HcgE_t3o0nQGHWJr_Icq_kK89XqTZLZwhI7lwoIJo/exec';
+const PA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyAbL6PrNFescOTS6lns2k1rV1HcgE_t3o0nQGHWJr_Icq_kK89XqTZLZwhI7lwoIJo/exec%27;
 async function sendToPowerAutomate(payload) {
   await fetch(PA_ENDPOINT, {
     method: 'POST',
@@ -435,6 +420,7 @@ async function sendToPowerAutomate(payload) {
     body: JSON.stringify(payload)
   });
 }
+  console.log('atualizado 260715161500')
 </script>
 </body>
 </html>
