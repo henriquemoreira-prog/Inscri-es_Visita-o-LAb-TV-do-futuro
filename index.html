@@ -224,6 +224,9 @@ function generateMonthBlock(year, month) {
     grid.appendChild(document.createElement('div'));
   }
   
+  var hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
   for (var i = 1; i <= daysInMonth; i++) {
     (function(day) {
       var date      = new Date(year, month, day);
@@ -236,8 +239,9 @@ function generateMonthBlock(year, month) {
       
       var horariosOcupados = ocupacao[formatted] || [];
       var diaLotado = horariosOcupados.length >= 3;
+      var diaPassado = date < hoje;
       
-      if (!allowed.includes(dayWeek) || diaLotado) {
+      if (!allowed.includes(dayWeek) || diaLotado || diaPassado) {
         el.classList.add('disabled');
       } else {
         el.addEventListener('click', function(e) {
@@ -435,6 +439,7 @@ async function sendToPowerAutomate(payload) {
     body: JSON.stringify(payload)
   });
 }
+  console.log('atualizado 260715161500')
 </script>
 </body>
 </html>
